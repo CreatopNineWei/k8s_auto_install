@@ -9,7 +9,7 @@
   * ubuntu 18.04.5 + k8s 1.22.0
 
 ## 更新記錄
-* 先SSH進要安裝的主機，建議先sudo su
-* 指令：wget http://192.168.168.131:8888/nine/k8s_auto_install/-/raw/master/install_k8s.sh?inline=false
+* 先SSH進要安裝的主機，因為.sh內很多操作都需要root權限，必須先sudo su
+* 指令： wget http://192.168.168.131:8888/nine/k8s_auto_install/-/raw/master/install_k8s.sh
 * 指令：/bin/bash install_k8s.sh
 * 等待，收工
