@@ -9,7 +9,7 @@ cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get install -y kubelet=1.22.1-00 kubeadm=1.22.1-00 kubectl=1.22.1-00
 sudo apt-mark hold kubelet kubeadm kubectl
 sudo modprobe overlay
 sudo modprobe br_netfilter
@@ -19,16 +19,15 @@ net.ipv4.ip_forward                 = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 EOF
 sudo sysctl --system
-sudo export VERSION=1.22
+sudo export VERSION=1.21
 sudo export OS=xUbuntu_18.04
 sudo echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
 sudo echo "deb http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable:/cri-o:/$VERSION/$OS/ /" > /etc/apt/sources.list.d/devel:kubic:libcontainers:stable:cri-o:$VERSION.list
 sudo curl -L https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable:cri-o:$VERSION/$OS/Release.key | apt-key add -
 sudo curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/$OS/Release.key | apt-key add -
 sudo apt-get update
-sudo apt-get install curl jq tar
-curl https://raw.githubusercontent.com/cri-o/cri-o/master/scripts/get | bash -s -- -t v1.22.0
-sudo apt-get install cri-o-runc
+sudo apt-get install -y cri-o cri-o-runc
+sudo sed -i 's/,metacopy=on//g' /etc/containers/storage.conf
 sudo systemctl daemon-reload
 sudo systemctl start crio
 sudo sed -i '/swap/s/^.*$/#\1/g' /etc/fstab
